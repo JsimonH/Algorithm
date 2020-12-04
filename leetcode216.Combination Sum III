@@ -43,7 +43,7 @@ public:
     vector<vector<int>> result;
     vector<int> path;
 
-    void backtrace(int target, int k, int sum, int startIdx)
+    void backtrack(int target, int k, int sum, int startIdx)
     {
         //剪枝
         if(sum > target)
@@ -60,7 +60,7 @@ public:
         {
             sum += i;
             path.push_back(i);
-            backtrace(target, k, sum, i + 1);
+            backtrack(target, k, sum, i + 1);
             //回溯
             sum -= i;
             path.pop_back();
@@ -68,7 +68,7 @@ public:
     }
 
     vector<vector<int>> combinationSum3(int k, int n) {
-        backtrace(n, k, 0, 1);
+        backtrack(n, k, 0, 1);
         return result;
     }
 };
