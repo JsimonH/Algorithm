@@ -25,7 +25,7 @@ public:
 
     vector<string> res;
     string s;
-    void backtrace(const string& digits, int index)
+    void backtrack(const string& digits, int index)
     {
         if(index == digits.size())
         {
@@ -37,7 +37,7 @@ public:
         for (int i = 0; i < str.size(); i++) 
         {
             s.push_back(str[i]);
-            backtrace(digits, index + 1);
+            backtrack(digits, index + 1);
             s.pop_back();   //回溯
         }
     }
@@ -47,7 +47,7 @@ public:
         {
             return res;
         }
-        backtrace(digits, 0);
+        backtrack(digits, 0);
         return res;
     }
 };
