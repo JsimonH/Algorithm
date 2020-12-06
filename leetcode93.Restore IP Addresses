@@ -1,0 +1,87 @@
+/*
+Given a string s containing only digits, return all possible valid IP addresses that can be obtained from s. You can return them in any order.
+A valid IP address consists of exactly four integers, each integer is between 0 and 255, separated by single dots and cannot have leading zeros. 
+For example, "0.1.2.201" and "192.168.1.1" are valid IP addresses and "0.011.255.245", "192.168.1.312" and "192.168@1.1" are invalid IP addresses. 
+
+Example 1:
+Input: s = "25525511135"
+Output: ["255.255.11.135","255.255.111.35"]
+
+Example 2:
+Input: s = "0000"
+Output: ["0.0.0.0"]
+
+Example 3:
+Input: s = "1111"
+Output: ["1.1.1.1"]
+
+Example 4:
+Input: s = "010010"
+Output: ["0.10.0.10","0.100.1.0"]
+
+Example 5:
+Input: s = "101023"
+Output: ["1.0.10.23","1.0.102.3","10.1.0.23","10.10.2.3","101.0.2.3"]
+*/
+
+class Solution {
+public:
+    vector<string> res;
+    
+    bool isValid(const string& s, int left, int right)
+    {
+        if(left > right)
+        {
+            return false;
+        }
+        int sum = 0;
+        for (int i = left ; i <= right; i++) 
+        {
+            if (left != right && s[left] == '0' ) 
+            {
+                return false;
+            }
+            sum = sum * 10 + (s[i] - '0');
+            if (sum > 255)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // point: 分隔符'.'的数量
+    void backtrack(string& s, int startIdx, int point)
+    {
+        // 3个'.'说明字符串已分成四段
+        if(point == 3)
+        {
+            if(isValid(s, startIdx, s.size() - 1))
+            {
+                res.push_back(s);
+            }
+            return;
+        }
+
+        for(int i =startIdx; i < s.size(); i++)
+        {
+            if(isValid(s, startIdx, i))
+            {
+                s.insert(s.begin() + i + 1, '.');
+                point++;
+                backtrack(s, i + 2, point);
+                point--;
+                s.erase(s.begin() + i + 1);
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    vector<string> restoreIpAddresses(string s) {
+        backtrack(s, 0, 0);
+        return res;
+    }
+};
